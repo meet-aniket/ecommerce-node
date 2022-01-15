@@ -34,9 +34,9 @@ app.use(cors());
 
 // Routes Definition
 app.use("/api", authRoutes);
-app.use("/api", userRoutes);
-app.use("/api", productRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
+app.use("/api", userRoutes);
 
 // PORT Definition
 const port = process.env.PORT || 8000;
