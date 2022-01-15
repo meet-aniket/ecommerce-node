@@ -14,6 +14,11 @@ exports.getProductById = (req, res, next, id) => {
   })
 }
 
+exports.getProduct = (req, res) => {
+  req.product.photo = undefined;
+  return res.json(req.product);
+}
+
 exports.createProduct = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
