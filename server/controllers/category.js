@@ -24,7 +24,7 @@ exports.createCategory = (req, res) => {
   })
 }
 
-exports.getCategory = () => {
+exports.getCategory = (req, res) => {
   return res.json(req.category);
 }
 
@@ -39,3 +39,32 @@ exports.getAllCategory = (req, res) => {
   });
 };
 
+exports.updateCategory = (req, res) => {
+  const category = req.category;
+  category.name = req.body.name;
+
+  category.save((err, updatedCategory) => {
+    if(err) {
+      return res.status(400).json({
+        error: "failed to save category in database!"
+      })
+    }
+    res.json(updatedCategory);
+  })
+}
+
+exports.removeCategory = (req, res) => {
+  const category = req.category;
+
+  category.remove((err, removedCategory) => {
+    if(err) {
+      return res.status(400).json({
+        error: "failed to delete category from database!"
+      })
+    }
+    res.json({
+      message: "deleted successfully!",
+      removedCategory
+    })
+  })
+}
