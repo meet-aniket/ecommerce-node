@@ -7,6 +7,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+const path = require("path");
+const createError = require("http-errors");
+
 // Routes
 const authRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
@@ -16,16 +19,21 @@ const userRoutes = require("./routes/user");
 
 // DB Connection
 mongoose
-  .connect(process.env.DATABASE, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
+    // useCreateIndex: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("DB CONNECTED");
+    console.info("MONGO CONNECTION SUCCESS !!!");
   })
-  .catch(() => {
-    console.log("can not connect with database");
+  .catch((err) => {
+    console.error("can not connect with database");
   });
+
+const connection = mongoose.connection;
+
+// console.log(connection)
 
 // Middlewares
 app.use(bodyParser.json());
