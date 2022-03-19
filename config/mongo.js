@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const connectDB = async () => {
+const mongoConfig = async () => {
   try {
     const URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ecom-store";
 
@@ -19,3 +19,5 @@ const connectDB = async () => {
     return err;
   }
 }
+
+module.exports = { mongoConfig };
