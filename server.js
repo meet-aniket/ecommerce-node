@@ -5,9 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
 
-const path = require("path");
 const cors = require("cors");
-const logger = require("morgan");
 
 // DB Configuration
 const { mongoConfig } = require("./config/mongo");
@@ -30,6 +28,22 @@ app.use("/api", authRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 app.use("/api", userRoutes);
+
+// Catch 404 and forward to error handler
+app.use((req, res, next) => {
+  next(createError(404));
+})
+
+// Error Handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message
+    }
+  })
+})
 
 // PORT Definition
 const PORT = process.env.PORT || 8000;

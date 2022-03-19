@@ -1,23 +1,39 @@
 const mongoose = require("mongoose");
 
 const mongoConfig = async () => {
-  try {
-    const URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ecom-store";
+  const URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ecom-store";
 
-    await mongoose
+  await mongoose
     .connect(URI, {
       useNewUrlParser: true,
       // useCreateIndex: true,
       useUnifiedTopology: true,
-    }).then(() => {
+    })
+    .then(() => {
       console.info("MONGO CONNECTION SUCCESS !!!");
-    }).catch((err) => {
+    })
+    .catch((err) => {
       console.error(err);
     })
-  } catch(err) {
-    console.error(err);
-    return err;
-  }
+  
+  mongoose.connection.on('connected', () => {
+    console.info("MONGO CONNECTED WITH DB !!!");
+  })
+
+  mongoose.connection.on('error', (err) => {
+    console.error(err.message);
+  })
+
+  mongoose.connection.on('disconnected', () => {
+    console.info("MONGO CONNECTION CLOSED !!!");
+  })
+
+  process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+      console.info("MONGO CONNECTION CLOSED !!!");
+      process.exit(0);
+    })
+  })
 }
 
 module.exports = { mongoConfig };
