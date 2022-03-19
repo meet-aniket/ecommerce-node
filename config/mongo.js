@@ -6,7 +6,6 @@ const mongoConfig = async () => {
   await mongoose
     .connect(URI, {
       useNewUrlParser: true,
-      // useCreateIndex: true,
       useUnifiedTopology: true,
     })
     .then(() => {
